@@ -1,0 +1,160 @@
+<body class="menubar-hoverable header-fixed menubar-pin ">
+    <app-header></app-header>
+
+    <div id="base" class="base">
+
+
+        <div class="offcanvas">
+        </div>
+
+        <div id="content">
+            <section>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-head style-accent">
+                                    <header>Adjuntar archivos por defecto</header>
+                                </div>
+                                <div class="card-body">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <dropzone [config]="configT" [message]="'Click o suelta los documentos de TÉCNICOS aquí'" (error)="onUploadError($event)"
+                                                (success)="onUploadSuccessT($event)"></dropzone>
+                                        </div>
+                                        <table class="table no-margin table-hover table-striped" *ngIf="documentosTecnicos?.length > 0">
+                                            <thead>
+                                                <tr>
+                                                    <th>NOMBRE</th>
+                                                    <th>DESCARGAR</th>
+                                                    <th>ELIMINAR</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of documentosTecnicos">
+                                                    <td>{{item.nombre}}</td>
+                                                    <td>
+                                                        <button (click)="downloadDoc(item.url)" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-success">
+                                                            <i class="md md-cloud-download"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button (click)="deleteDocT(item.id)" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-danger">
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <dropzone [config]="configL" [message]="'Click o suelta los documentos LEGALES aquí'" (error)="onUploadError($event)" (success)="onUploadSuccessL($event)"></dropzone>
+                                        </div>
+                                        <table class="table no-margin table-hover table-striped" *ngIf="documentosLegales?.length > 0">
+                                            <thead>
+                                                <tr>
+                                                    <th>NOMBRE</th>
+                                                    <th>DESCARGAR</th>
+                                                    <th>ELIMINAR</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of documentosLegales">
+                                                    <td>{{item.nombre}}</td>
+                                                    <td>
+                                                        <button (click)="downloadDoc(item.url)" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-success">
+                                                            <i class="md md-cloud-download"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button (click)="deleteDocL(item.id)" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-danger">
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="menubar" class=" ">
+            <div class="menubar-fixed-panel">
+                <div>
+                    <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <div class="expanded">
+                    <span class="text-lg text-bold text-primary ">MATERIAL&nbsp;ADMIN</span>
+                </div>
+            </div>
+            <div class="menubar-scroll-panel">
+                <ul id="main-menu" class="gui-controls">
+                    <li>
+                        <a [routerLink]="['/administrador', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-home"></i>
+                            </div>
+                            <span class="title">Inicio</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/agendamiento', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <span class="title">Agendado</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/equipo', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <span class="title">Equipo técnico</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/clientes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </div>
+                            <span class="title">Clientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/ordenes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-format-list-bulleted"></i>
+                            </div>
+                            <span class="title">Ordenes de trabajo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/parametros', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-aspect-ratio"></i>
+                            </div>
+                            <span class="title">Parámetros</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="menubar-foot-panel">
+                    <small class="no-linebreak hidden-folded">
+                        <span class="opacity-75">Copyright &copy; 2017</span>
+                        <strong>PlagAPP</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>

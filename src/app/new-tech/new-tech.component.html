@@ -1,0 +1,190 @@
+<body class="menubar-hoverable header-fixed menubar-pin ">
+    <app-header></app-header>
+
+    <div id="base" class="base">
+
+        <div class="offcanvas">
+        </div>
+
+        <div id="content">
+            <section>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <form class="form form-validate" (submit)="newTech()" #newTechForm="ngForm">
+                                <div class="card">
+                                    <div class="card-head style-accent">
+                                        <header>Nuevo Técnico</header>
+                                    </div>
+                                    <div class="card-body">
+
+
+                                        <div class="form-group" style="text-align: -webkit-center;">
+                                            <img class="img-circle img-responsive img-producto" [src]="data.image" alt="">
+                                            <input [(ngModel)]="inputAvatar" (change)="updateAvatar($event)" type="file" accept="image/*" name="file" id="file" class="inputfile"
+                                            />
+                                            <label for="file" class="btn ink-reaction btn-floating-action btn-default-dark btn-edit" style="position: relative;box-shadow: 0 1px 3px 0 rgb(68, 68, 68);opacity: 1;">
+                                                <i class="md md-edit"></i>
+                                            </label>
+                                        </div>
+                                        <div class="row" *ngIf="isChangeAvatar">
+                                            <div class="col-sm-8 text-center">
+                                                <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+                                            </div>
+                                            <div class="col-sm-4 text-center">
+                                                <button type="button" class="btn ink-reaction btn-raised btn-primary btn-block" (click)="aceptarImagen()">Aceptar</button>
+                                                <button type="button" class="btn btn-flat btn-primary ink-reaction btn-block" (click)="hideCrop()">Cancelar</button>
+                                            </div>
+                                        </div>
+
+                                        <em class="text-caption text-right">Todos los campos marcados con (*) son obligatorios</em>
+                                        <div class="form-group">
+                                            <input class="form-control" id="rut" name="rut" type="text" required [(ngModel)]="json.rut">
+                                            <label for="rut">*Rut</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" id="nombre" name="nombre" type="text" required [(ngModel)]="json.nombre">
+                                            <label for="nombre">*Nombre</label>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" [(ngModel)]="json.paterno" required name="paterno">
+                                                    <label for="paterno">*Apellido paterno</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" [(ngModel)]="json.materno" name="materno">
+                                                    <label for="materno">Apellido materno</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" id="email" name="email" type="email" required [(ngModel)]="json.correo">
+                                            <label for="email">*Correo eléctronico</label>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="number" [(ngModel)]="json.telefono" required name="telefono">
+                                                    <label for="telefono">*Télefono de contacto</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="number" [(ngModel)]="json.emergencia" name="emergencia">
+                                                    <label for="emergencia">Télefono de emergencia</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" id="direccion" name="direccion" type="text" required [(ngModel)]="json.direccion">
+                                            <label for="direccion">*Dirección</label>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" [(ngModel)]="json.profesion" name="profesion">
+                                                    <label for="profesion">Profesión</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" [(ngModel)]="json.automovil" name="automovil">
+                                                    <label for="automovil">Automóvil asignado</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-actionbar">
+                                        <div class="card-actionbar-row">
+                                            <i class="fa fa-spinner fa-pulse fa-1x fa-fw" *ngIf="ifLoading"></i>
+                                            <span *ngIf="ifLoading">Creando técnico</span>
+                                            <button type="submit" class="btn ink-reaction btn-primary" [disabled]="!newTechForm.form.valid">Crear técnico</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="menubar" class=" ">
+            <div class="menubar-fixed-panel">
+                <div>
+                    <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <div class="expanded">
+                    <span class="text-lg text-bold text-primary ">MATERIAL&nbsp;ADMIN</span>
+                </div>
+            </div>
+            <div class="menubar-scroll-panel">
+                <ul id="main-menu" class="gui-controls">
+                    <li>
+                        <a [routerLink]="['/administrador', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-home"></i>
+                            </div>
+                            <span class="title">Inicio</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/agendamiento', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <span class="title">Agendado</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/equipo', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <span class="title">Equipo técnico</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/clientes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </div>
+                            <span class="title">Clientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/ordenes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-format-list-bulleted"></i>
+                            </div>
+                            <span class="title">Ordenes de trabajo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/parametros', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-aspect-ratio"></i>
+                            </div>
+                            <span class="title">Parámetros</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="menubar-foot-panel">
+                    <small class="no-linebreak hidden-folded">
+                        <span class="opacity-75">Copyright &copy; 2017</span>
+                        <strong>PlagAPP</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

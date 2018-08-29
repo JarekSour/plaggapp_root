@@ -1,0 +1,16 @@
+.logo{
+    max-width: 145px;
+}
+
+.nav-item{
+    padding-top: 6px;
+}
+
+.nav-item:hover{
+    background-color: rgb(255, 255, 255) !important;
+    color: #3838e8db;
+}
+
+.nav-item:focus{
+    background-color: rgb(255, 255, 255) !important;
+}

@@ -1,0 +1,142 @@
+<body class="menubar-hoverable header-fixed menubar-pin ">
+    <app-header></app-header>
+
+    <div id="base" class="base">
+
+        <div class="offcanvas">
+        </div>
+
+        <div id="content">
+            <section>
+                <div class="section-header">
+                    <div class="col-md-6 col-xs-6">
+                        <ol class="breadcrumb">
+                            <li [routerLink]="['/ordenes', idAdministrador]" class="link">
+                                Ordenes de trabajo
+                            </li>
+                            <li class="active">
+                                {{ tipo }}
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                    </div>
+                </div>
+
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <ul class="list divider-full-bleed">
+                                        <li *ngFor="let item of ordenes | paginate: { itemsPerPage: 10, currentPage: p }" class="tile" style="cursor: pointer;margin-top: 10px;height: 35px;min-height: 35px;">
+                                            <a (click)="toDetail(item)">
+                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                    {{item.nombre_empresa}}
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-xs-4 text-center">
+                                                    {{item.nombre}} {{item.apellido_paterno}}
+                                                </div>
+                                                <div class="col-md-2 col-sm-2 col-xs-2 pull-right">
+                                                    <button *ngIf="item.estado == 1" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-success">
+                                                        <i class="md md-check"></i>
+                                                    </button>
+                                                    <span *ngIf="item.estado == 0" style="font-style: italic;color: gray;font-size: 10px;">
+                                                        <button type="button" class="btn ink-reaction btn-floating-action btn-xs btn-danger">
+                                                            <i class="fa fa-close"></i>
+                                                        </button>
+                                                        No realizado
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-1 col-sm-1 col-xs-1 pull-right">
+                                                    N° {{item.correlativo}}
+                                                </div>
+                                                <div class="col-md-2 col-sm-2 col-xs-2 pull-right">
+                                                    {{ item.fecha | date: 'dd/MM/yyyy' }}
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <pagination-controls *ngIf="ordenes?.length > 0" class="mypaginate" style="text-align: center" (pageChange)="p = $event"
+                                        previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="menubar" class=" ">
+            <div class="menubar-fixed-panel">
+                <div>
+                    <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <div class="expanded">
+                    <span class="text-lg text-bold text-primary ">MATERIAL&nbsp;ADMIN</span>
+                </div>
+            </div>
+            <div class="menubar-scroll-panel">
+                <ul id="main-menu" class="gui-controls">
+                    <li>
+                        <a [routerLink]="['/administrador', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-home"></i>
+                            </div>
+                            <span class="title">Inicio</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/agendamiento', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <span class="title">Agendado</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/equipo', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <span class="title">Equipo técnico</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/clientes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </div>
+                            <span class="title">Clientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/ordenes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-format-list-bulleted"></i>
+                            </div>
+                            <span class="title">Ordenes de trabajo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/parametros', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-aspect-ratio"></i>
+                            </div>
+                            <span class="title">Parámetros</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="menubar-foot-panel">
+                    <small class="no-linebreak hidden-folded">
+                        <span class="opacity-75">Copyright &copy; 2017</span>
+                        <strong>PlagAPP</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

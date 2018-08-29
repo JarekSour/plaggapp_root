@@ -1,0 +1,87 @@
+<body class="menubar-hoverable header-fixed menubar-pin ">
+
+    <app-header></app-header>
+
+    <div id="content" style="min-height:100vh">
+        <div class="container">
+            <section>
+                <div class="section-header">
+                    <div class="pull-right">
+                        <div class="btn-group">
+                            <a routerLink="/new-admin" type="button" class="btn ink-reaction btn-accent-dark">
+                                <span class="fa fa-plus"></span> &nbsp;Crear administrador
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-body text-default-light">
+                                <h3 *ngIf="admins?.length == 0">Aún no existen administradores</h3>
+                                <div class="list-results">
+                                    <div class="col-xs-6 col-lg-4 hbox-xs" *ngFor="let item of admins">
+                                        <div class="hbox-column width-2">
+                                            <img class="img-circle img-responsive pull-left " [src]="item.logo">
+                                        </div>
+                                        <div class="hbox-column v-top">
+                                            <div class="clearfix">
+                                                <div class="col-lg-12 margin-bottom-lg name-tec">
+                                                    <a [routerLink]="['/administrador', item.id]" class="text-lg text-medium">{{item.nombre}} {{item.apellido_paterno}} {{item.apellido_materno}}</a>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix opacity-80">
+                                                <div class="col-md-12">
+                                                    &nbsp;
+                                                    <span style="font-weight: 800;font-size: 11px;">RUT EMPRESA</span>
+                                                    <br>&nbsp;&nbsp;&nbsp;&nbsp;{{item.rut}}
+                                                    <br> &nbsp;
+                                                    <span style="font-weight: 800;font-size: 11px;">CORREO</span>
+                                                    <br>&nbsp;&nbsp;&nbsp;&nbsp;{{item.email}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="disable?.length > 0">
+                        <div class="card">
+                            <div class="card-head card-head-xs style-primary">
+                                <header>Administradores deshabilitados</header>
+                            </div>
+                            <div class="card-body text-default-light">
+                                <div class="list-results">
+                                    <div class="col-xs-6 col-lg-4 hbox-xs" *ngFor="let item of disable">
+                                        <div class="hbox-column width-2">
+                                            <img class="img-circle img-responsive pull-left " [src]="item.logo">
+                                        </div>
+                                        <div class="hbox-column v-top">
+                                            <div class="clearfix">
+                                                <div class="col-lg-12 margin-bottom-lg name-tec">
+                                                    <a [routerLink]="['/administrador', item.id]" class="text-lg text-medium">{{item.nombre}} {{item.apellido_paterno}} {{item.apellido_materno}}</a>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix opacity-80">
+                                                <div class="col-md-12">
+                                                    &nbsp;
+                                                    <span style="font-weight: 800;font-size: 11px;">RUT EMPRESA</span>
+                                                    <br>&nbsp;&nbsp;&nbsp;&nbsp;{{item.rut}}
+                                                    <br> &nbsp;
+                                                    <span style="font-weight: 800;font-size: 11px;">CORREO</span>
+                                                    <br>&nbsp;&nbsp;&nbsp;&nbsp;{{item.email}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div>
+</body>

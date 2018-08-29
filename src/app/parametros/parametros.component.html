@@ -1,0 +1,521 @@
+<body class="menubar-hoverable header-fixed menubar-pin ">
+    <app-header></app-header>
+    <div id="base" class="base">
+
+        <div class="offcanvas">
+        </div>
+
+        <div id="content" style="min-height:100vh">
+            <section>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-head">
+                                    <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
+                                        <li [ngClass]="trampa? 'active' : '' " style="cursor: pointer">
+                                            <a (click)="eventProp(1)">TRAMPAS</a>
+                                        </li>
+                                        <li [ngClass]="cebo ? 'active' : '' " style="cursor: pointer">
+                                            <a (click)="eventProp(2)">CEBOS</a>
+                                        </li>
+                                        <li [ngClass]="veneno ? 'active' : '' " style="cursor: pointer">
+                                            <a (click)="eventProp(3)">APLICACIÓN</a>
+                                        </li>
+                                        <li [ngClass]="instalacion ? 'active' : '' " style="cursor: pointer">
+                                            <a (click)="eventProp(4)">INSTALACIÓNES</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body tab-content">
+                                    <div class="tab-pane" [ngClass]="trampa? 'active' : '' ">
+                                        <div class="col-md-10 col-md-offset-1">
+                                            <br>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <form class="form form-validate" (submit)="newTrampa()" #newTrampaForm="ngForm">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" type="text" [(ngModel)]="paramTrampa.nombre" [ngbTypeahead]="search_trampa" required name="trampa"
+                                                                        autocomplete="off">
+                                                                    <label for="trampa">Nombre de la trampa</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <select class="form-control" required name="cat" [(ngModel)]="paramTrampa.revision">
+                                                                        <option value="" disabled>&nbsp;</option>
+                                                                        <option value="NINGUNA">NINGÚNA</option>
+                                                                        <option *ngFor="let item of jsonTrampa" [value]="item.nombre">{{item.nombre}}</option>
+                                                                    </select>
+                                                                    <label for="cat">Copiar sub-categorías de revisión</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12 text-right">
+                                                                <button class="btn ink-reaction btn-primary" type="submit" [disabled]="!newTrampaForm.form.valid">CREAR TRAMPA</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+
+                                                    <table class="table no-margin table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>NOMBRE</th>
+                                                                <th>ELIMINAR</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of jsonTrampa">
+                                                                <td (click)="showSubCategoria(item.nombre)" style="cursor: pointer">{{item.nombre}}</td>
+                                                                <td>
+                                                                    <button (click)="deleteTrampa(item.id, item.nombre)" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-danger">
+                                                                        <i class="fa fa-trash-o"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-10 col-md-offset-1">
+                                            <div class="card" *ngIf="ifSubcategoria">
+                                                <div class="card-head card-head-xs style-primary">
+                                                    <header>SUB-CATEGORÍAS DE REVISIÓN </header>
+                                                </div>
+                                                <div class="card-body">
+                                                    <form class="form form-validate" (submit)="newSubCategoria()" #newSubForm="ngForm">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" type="text" [(ngModel)]="subCategoria.categoria" readonly name="cat" style="cursor: default">
+                                                                    <label for="cat">Categoría</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" type="text" [(ngModel)]="subCategoria.subcategoria" required name="subcategoria">
+                                                                    <label for="subcategoria">Nombre de la sub-categoría</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-offset-6 col-sm-6">
+                                                                <div class="checkbox checkbox-styled">
+                                                                    <label>
+                                                                        <input type="checkbox" [(ngModel)]='subCategoria.checkbox' (click)="checkCheckbox($event)" name="chk">
+                                                                        <span>Solicitar información extra?</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-offset-6 col-sm-6" *ngIf="subCategoria.checkbox == true">
+                                                                <div class="form-group">
+                                                                    <label for="pregunta">Tipo de respuesta</label>
+                                                                    <div>
+                                                                        <label class="radio-inline radio-styled">
+                                                                            <input type="radio" name="inlineRadioOptions" value="text" checked [(ngModel)]="subCategoria.respuesta">
+                                                                            <span>Texto</span>
+                                                                        </label>
+                                                                        <label class="radio-inline radio-styled">
+                                                                            <input type="radio" name="inlineRadioOptions" value="number" [(ngModel)]="subCategoria.respuesta">
+                                                                            <span>Número</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <input class="form-control" type="text" [(ngModel)]="subCategoria.pregunta" name="pregunta" [required]="subCategoria.checkbox == true"
+                                                                        placeholder="Crear sub-categoría">
+                                                                    <label for="pregunta">Ingrese pregunta (ej. Números de capturas)</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12 text-right">
+                                                                <button class="btn ink-reaction btn-primary" type="submit" [disabled]="!newSubForm.form.valid">CREAR SUB-CATEGORÍA</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <br>
+                                                    <table class="table no-margin table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>CATEGORÍA</th>
+                                                                <th>SUB-CATEGORÍA</th>
+                                                                <th>PREGUNTA</th>
+                                                                <th>TIPO DE RESPUESTA</th>
+                                                                <th>ELIMINAR</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of jsonSubCategoria">
+                                                                <td>{{item.categoria}}</td>
+                                                                <td>{{item.subcategoria}}</td>
+                                                                <td>{{item.pregunta ? item.pregunta: '---'}}</td>
+                                                                <td>{{item.respuesta ? item.respuesta == 'text' ? 'TEXTO': 'NÚMERO'
+                                                                    : '---'}}</td>
+                                                                <td>
+                                                                    <button (click)="deleteSubCategoria(item.id)" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-danger">
+                                                                        <i class="fa fa-trash-o"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" [ngClass]="cebo ? 'active' : '' ">
+                                        <div class="col-md-8 col-md-offset-2">
+                                            <br>
+                                            <form class="form form-validate" (submit)="newCebo()" #newCeboForm="ngForm">
+                                                <em class="text-caption text-right">Todos los campos marcados con (*) son obligatorios</em>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <select class="form-control" required name="categoria" [(ngModel)]="paramCebo.categoria">
+                                                                <option value="" disabled>&nbsp;</option>
+                                                                <option *ngFor="let item of jsonTrampa" [value]="item.nombre">{{item.nombre}}</option>
+                                                            </select>
+                                                            <label for="categoria">*Categoría</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <input [(ngModel)]="paramCebo.marca" type="text" class="form-control" name="marca" required>
+                                                            <label for="marca">*Marca</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <input [(ngModel)]="paramCebo.formulacion" type="text" class="form-control" name="formulacion" required>
+                                                            <label for="formulacion">*Formulación</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <input [(ngModel)]="paramCebo.isp" type="text" class="form-control" name="isp" required>
+                                                            <label for="isp">*Número de registro ISP</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <input [(ngModel)]="paramCebo.concentracion" type="text" class="form-control" name="concentracion" required>
+                                                            <label for="concentracion">*Concentración</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <input [(ngModel)]="paramCebo.dosis" type="text" class="form-control" name="dosis" required>
+                                                            <label for="dosis">*Dosis</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <input [(ngModel)]="paramCebo.superficie" type="text" class="form-control" name="superficie" required>
+                                                            <label for="superficie">*Superficie</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-right">
+                                                        <button class="btn ink-reaction btn-primary" type="submit" [disabled]="!newCeboForm.form.valid">CREAR CEBO</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <br>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <table class="table no-margin table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>CATEGORÍA</th>
+                                                                <th>MARCA</th>
+                                                                <th>FORMULACIÓN</th>
+                                                                <th>N° ISP</th>
+                                                                <th>CONCENTRACIÓN</th>
+                                                                <th>DOSIS</th>
+                                                                <th>SUPERFICIE</th>
+                                                                <th>ELIMINAR</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of jsonCebo">
+                                                                <td>{{item.categoria}}</td>
+                                                                <td>{{item.marca}}</td>
+                                                                <td>{{item.formulacion}}</td>
+                                                                <td>{{item.isp}}</td>
+                                                                <td>{{item.concentracion}}</td>
+                                                                <td>{{item.dosis}}</td>
+                                                                <td>{{item.superficie}}</td>
+                                                                <td>
+                                                                    <button (click)="deleteCebo(item.id)" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-danger">
+                                                                        <i class="fa fa-trash-o"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" [ngClass]="veneno ? 'active' : '' ">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <form class="form form-validate" (submit)="newSubAplicacion()" #newCatSanForm="ngForm">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-content">
+                                                                    <input type="text" class="form-control" required name="catAplicacion" [(ngModel)]="subAplicacion.nombre">
+                                                                    <label for="catAplicacion">Agregar categoría</label>
+                                                                </div>
+                                                                <div class="input-group-btn">
+                                                                    <button class="btn ink-reaction btn-primary" type="submit" [disabled]="!newCatSanForm.form.valid">CREAR CATEGORÍA</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <table class="table no-margin table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>CATEGORÍA</th>
+                                                                <th>ELIMINAR</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of jsonSubAplicacion">
+                                                                <td>{{item.nombre}}</td>
+                                                                <td>
+                                                                    <button (click)="deleteSubAplicacion(item.id)" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-danger">
+                                                                        <i class="fa fa-trash-o"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <form class="form form-validate" (submit)="newVeneno()" #newVenenoForm="ngForm">
+                                                        <em class="text-caption text-right">Todos los campos marcados con (*) son obligatorios</em>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <select name="categoria" class="form-control" [(ngModel)]="paramVeneno.categoria" required>
+                                                                        <option value="" disabled>&nbsp;</option>
+                                                                        <option *ngFor="let item of jsonSubAplicacion" value="{{item.nombre}}">{{item.nombre}}</option>
+                                                                    </select>
+                                                                    <label for="categoria">*Categoría</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <input [(ngModel)]="jsonParametro.veneno" type="text" class="form-control" name="veneno" required>
+                                                                    <label for="password">*Nombre del veneno</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <input [(ngModel)]="paramVeneno.isp" type="text" class="form-control" name="veneno" required>
+                                                                    <label for="numero">*Número de registro ISP</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <input [(ngModel)]="paramVeneno.formulacion" type="text" class="form-control" name="formulacion" required>
+                                                                    <label for="formulacion">*Formulación</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <input [(ngModel)]="paramVeneno.concentracion" type="text" class="form-control" name="concentracion" required>
+                                                                    <label for="concentracion">*Concentración</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <input [(ngModel)]="paramVeneno.dosis" type="text" class="form-control" name="dosis">
+                                                                    <label for="dosis">Dosis</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12 text-right">
+                                                                <button class="btn ink-reaction btn-primary" type="submit" [disabled]="!newVenenoForm.form.valid">CREAR APLICACIÓN</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <br>
+                                                    <table class="table no-margin table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>CATEGORÍA</th>
+                                                                <th>NOMBRE</th>
+                                                                <th>N° ISP</th>
+                                                                <th>FORMULACIÓN</th>
+                                                                <th>CONCENTRACIÓN</th>
+                                                                <th>DOSIS</th>
+                                                                <th>ELIMINAR</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of jsonVeneno">
+                                                                <td>{{item.categoria}}</td>
+                                                                <td>{{item.nombre}}</td>
+                                                                <td>{{item.isp}}</td>
+                                                                <td>{{item.formulacion}}</td>
+                                                                <td>{{item.concentracion}}</td>
+                                                                <td>{{item.dosis}}</td>
+                                                                <td>
+                                                                    <button (click)="deleteVeneno(item.id)" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-danger">
+                                                                        <i class="fa fa-trash-o"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" [ngClass]="instalacion ? 'active' : '' ">
+                                        <div class="col-md-8 col-md-offset-2">
+                                            <br>
+                                            <form class="form form-validate" (submit)="newInstalacion()" #newInstalacionForm="ngForm">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-content">
+                                                            <input class="form-control" id="instalacion" type="text" [(ngModel)]="jsonParametro.instalacion" [ngbTypeahead]="search_sector"
+                                                                required name="instalacion">
+                                                            <label for="instalacion">Nombre del lugar de instalaciön</label>
+                                                        </div>
+                                                        <div class="input-group-btn">
+                                                            <button class="btn ink-reaction btn-primary" type="submit" [disabled]="!newInstalacionForm.form.valid">CREAR INSTALACIÓN</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <br>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <table class="table no-margin table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>NOMBRE</th>
+                                                                <th>ELIMINAR</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of jsonInstalacion">
+                                                                <td>{{item.nombre}}</td>
+                                                                <td>
+                                                                    <button (click)="deleteInstalacion(item.id)" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-danger">
+                                                                        <i class="fa fa-trash-o"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="menubar" class=" ">
+            <div class="menubar-fixed-panel">
+                <div>
+                    <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <div class="expanded">
+                    <span class="text-lg text-bold text-primary ">MATERIAL&nbsp;ADMIN</span>
+                </div>
+            </div>
+            <div class="menubar-scroll-panel">
+                <ul id="main-menu" class="gui-controls">
+                    <li>
+                        <a [routerLink]="['/administrador', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-home"></i>
+                            </div>
+                            <span class="title">Inicio</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/agendamiento', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <span class="title">Agendado</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/equipo', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <span class="title">Equipo técnico</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/clientes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </div>
+                            <span class="title">Clientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/ordenes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-format-list-bulleted"></i>
+                            </div>
+                            <span class="title">Ordenes de trabajo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/parametros', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-aspect-ratio"></i>
+                            </div>
+                            <span class="title">Parámetros</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="menubar-foot-panel">
+                    <small class="no-linebreak hidden-folded">
+                        <span class="opacity-75">Copyright &copy; 2017</span>
+                        <strong>PlagAPP</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

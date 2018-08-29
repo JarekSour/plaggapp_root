@@ -1,0 +1,14 @@
+.img-avatar{
+    max-width: 240px !important;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px grey;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}

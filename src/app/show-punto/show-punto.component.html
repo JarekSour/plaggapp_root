@@ -1,0 +1,208 @@
+<body class="menubar-hoverable header-fixed menubar-pin ">
+    <app-header></app-header>
+
+    <div id="base" class="base">
+
+
+        <div class="offcanvas">
+        </div>
+
+        <div id="content">
+            <section>
+                <div class="section-header">
+                    <div class="col-md-6 col-xs-6">
+                        <ol class="breadcrumb">
+                            <li [routerLink]="['/ordenes', idAdministrador]" class="link">
+                                Ordenes de trabajo
+                            </li>
+                            <li [routerLink]="['/orden', idAdministrador, tipo, id]" class="link">
+                                {{tipo}}
+                            </li>
+                            <li [routerLink]="['/detalle', idAdministrador, tipo, id]" class="link">
+                                Detalle
+                            </li>
+                            <li class="active">
+                                Revisión punto a punto
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                        <a [routerLink]="['/mapa',idAdministrador, tipo, id]" type="button" class="btn ink-reaction btn-accent pull-right">
+                            <span class="fa fa-map-marker"></span> &nbsp;VER MAPA DE INSTALACIÓN
+                        </a>
+                    </div>
+                </div>
+
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="pull-right">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn ink-reaction btn-accent-light" (click)="toExcel()">
+                                                    <i class="fa fa-file-excel-o"></i>&nbsp;Exportar a excel
+                                                </button>
+                                                <!-- <button type="button" class="btn ink-reaction btn-accent-light" (click)="toPdf()">
+                                                    <i class="fa fa-file-pdf-o"></i>&nbsp;Exportar a PDF
+                                                </button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div style="position: relative;">
+                                        <button type="button" class="btn ink-reaction btn-default btnScrollLeft" (click)="toLeft()">
+                                            <span class="left" style="margin-left: -46px;">izquierda
+                                                <i class="fa fa-arrow-up"></i>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="btn ink-reaction btn-default btnScrollRight" (click)="toRight()">
+                                            <span class="right" style="margin-left: -43px;">
+                                                <i class="fa fa-arrow-up"></i> derecha</span>
+                                        </button>
+                                        <div class="table-responsive" id="myTable">
+                                            <table class="table table-striped no-margin table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>PUNTO</th>
+                                                        <th>TRAMPA / APLICACIÓN</th>
+                                                        <th>FOTOGRAFÍA</th>
+                                                        <th>SECTOR</th>
+                                                        <th>CEBO / FORMULACIÓN</th>
+                                                        <th>N° ISP</th>
+                                                        <th>CONCENTRACIÓN</th>
+                                                        <th>DOSIS</th>
+                                                        <th>SUPERFICIE</th>
+                                                        <th>TIEMPO</th>
+                                                        <th>COMENTARIO</th>
+                                                        <th>PREGUNTA</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let item of puntos">
+                                                        <td>{{item.nombre}}</td>
+                                                        <td>{{item.trampa ? item.trampa : item.veneno}}</td>
+                                                        <td>
+                                                            <button (click)="openModal(item.id)" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-primary">
+                                                                <i class="fa fa-camera"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td>{{item.sector}}</td>
+                                                        <td>{{item.cebo ? item.cebo : item.veneno ? item.veneno :'---'}}</td>
+                                                        <td>{{item.isp ? item.isp : '---'}}</td>
+                                                        <td>{{item.concentracion ? item.concentracion : '---'}}</td>
+                                                        <td>{{item.dosis ? item.dosis : '---'}}</td>
+                                                        <td>{{item.superficie ? item.superficie : '---'}}</td>
+                                                        <td [ngClass]="checkTime(item.tiempo) ? 'great' : ''">{{item.tiempo}}</td>
+                                                        <td>{{item.comentario ? item.comentario : '---'}}</td>
+                                                        <td [innerHTML]="item.activity"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="menubar" class=" ">
+            <div class="menubar-fixed-panel">
+                <div>
+                    <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <div class="expanded">
+                    <span class="text-lg text-bold text-primary ">MATERIAL&nbsp;ADMIN</span>
+                </div>
+            </div>
+            <div class="menubar-scroll-panel">
+                <ul id="main-menu" class="gui-controls">
+                    <li>
+                        <a [routerLink]="['/administrador', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-home"></i>
+                            </div>
+                            <span class="title">Inicio</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/agendamiento', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <span class="title">Agendado</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/equipo', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <span class="title">Equipo técnico</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/clientes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </div>
+                            <span class="title">Clientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/ordenes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-format-list-bulleted"></i>
+                            </div>
+                            <span class="title">Ordenes de trabajo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/parametros', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-aspect-ratio"></i>
+                            </div>
+                            <span class="title">Parámetros</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="menubar-foot-panel">
+                    <small class="no-linebreak hidden-folded">
+                        <span class="opacity-75">Copyright &copy; 2017</span>
+                        <strong>PlagAPP</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" [ngClass]="modal ? 'in' : '' " [style.display]="modal ? 'block' : 'none'" role="dialog" aria-labelledby="simpleModalLabel"
+        aria-hidden="false" style="padding-right: 17px;">
+        <div class="modal-backdrop fade in" style="height: 635px;"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="dismissModal()">×</button>
+                    <h4 class="modal-title" id="simpleModalLabel">Fotografía</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="dvCenter">
+                            <img *ngIf="image" class="img-responsive height-8 imgCenter" [src]="image">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="dismissModal()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

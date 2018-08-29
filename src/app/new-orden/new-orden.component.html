@@ -1,0 +1,168 @@
+<body class="menubar-hoverable header-fixed menubar-pin ">
+    <app-header></app-header>
+
+    <div id="base" class="base">
+
+        <div class="offcanvas">
+        </div>
+
+        <div id="content">
+            <section>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <form class="form form-validate" (submit)="newOrden()" #newOrdenForm="ngForm">
+                                <div class="card">
+                                    <div class="card-head style-accent">
+                                        <header>Nueva Orden</header>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <input class="form-control" name="fecha" [(ngModel)]="orden.fecha" [dpDayPicker]="config" required/>
+                                            <label for="fecha" style="margin-bottom: 24px;">Fecha programada</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Servicios</label>
+                                            <div class="checkbox checkbox-styled">
+                                                <label>
+                                                    <input type="checkbox" (click)="changeDesinsectado()" [(ngModel)]="servicios.desinsectado" name="Desinsectado">
+                                                    <span>Desinsectado</span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox checkbox-styled">
+                                                <label>
+                                                    <input type="checkbox" (click)="changeDesratizado()" [(ngModel)]="servicios.desratizado" name="Desratizado">
+                                                    <span>Desratizado</span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox checkbox-styled">
+                                                <label>
+                                                    <input type="checkbox" (click)="changeSanitizaado()" [(ngModel)]="servicios.sanitizado" name="Sanitizado">
+                                                    <span>Sanitizado</span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox checkbox-styled">
+                                                <label>
+                                                    <input type="checkbox" (click)="changeTuv()" [(ngModel)]="servicios.tuv" name="Tuv">
+                                                    <span>Tuv</span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox checkbox-styled">
+                                                <label>
+                                                    <input type="checkbox" (click)="changeControl()" [(ngModel)]="servicios.control" name="Control">
+                                                    <span>Control paloma</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <select id="tecnico" name="tecnico" class="form-control" required [(ngModel)]="orden.tecnico" aria-required="true">
+                                                <option value="" disabled>&nbsp;</option>
+                                                <option *ngFor="let item of tech" [value]="item.id">
+                                                    {{item.nombre}} {{item.apellido_paterno}} {{item.apellido_materno}}
+                                                </option>
+                                            </select>
+                                            <label for="select1">Selecciona un técnico</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="cliente" name="cliente" class="form-control" required [(ngModel)]="orden.cliente" aria-required="true">
+                                                <option value="" disabled>&nbsp;</option>
+                                                <option *ngFor="let item of client" [value]="item.id">
+                                                    {{item.nombre_empresa}}
+                                                </option>
+                                            </select>
+                                            <label for="select1">Seleciona un cliente</label>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="card-actionbar">
+                                        <div class="card-actionbar-row">
+                                            <i class="fa fa-spinner fa-pulse fa-1x fa-fw" *ngIf="ifLoading"></i>
+                                            <span *ngIf="ifLoading">Creando orden</span>
+                                            <button type="submit" class="btn ink-reaction btn-primary" [disabled]="!newOrdenForm.form.valid">Crear orden</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="menubar" class=" ">
+            <div class="menubar-fixed-panel">
+                <div>
+                    <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <div class="expanded">
+                    <span class="text-lg text-bold text-primary ">MATERIAL&nbsp;ADMIN</span>
+                </div>
+            </div>
+            <div class="menubar-scroll-panel">
+                <ul id="main-menu" class="gui-controls">
+                    <li>
+                        <a [routerLink]="['/administrador', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-home"></i>
+                            </div>
+                            <span class="title">Inicio</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/agendamiento', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <span class="title">Agendado</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/equipo', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <span class="title">Equipo técnico</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/clientes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </div>
+                            <span class="title">Clientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/ordenes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-format-list-bulleted"></i>
+                            </div>
+                            <span class="title">Ordenes de trabajo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/parametros', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-aspect-ratio"></i>
+                            </div>
+                            <span class="title">Parámetros</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="menubar-foot-panel">
+                    <small class="no-linebreak hidden-folded">
+                        <span class="opacity-75">Copyright &copy; 2017</span>
+                        <strong>PlagAPP</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

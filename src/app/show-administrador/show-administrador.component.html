@@ -1,0 +1,274 @@
+<body class="menubar-hoverable header-fixed menubar-pin ">
+    <app-header></app-header>
+
+    <div id="base" class="base">
+
+        <div class="offcanvas">
+        </div>
+
+        <div id="content">
+            <section>
+                <div class="section-body">
+                    <form class="form form-validate" (submit)="updateAdmnistrador()" #updateAdmnistradorForm="ngForm">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-10 col-md-offset-1">
+                                        <div class="col-md-4 col-xs-5">
+                                            <img class="border-white border-xl img-responsive auto-width img-avatar" [src]="json.logo" alt="">
+                                            <input (change)="updateLogo($event)" type="file" accept="image/*" name="file" id="file" class="inputfile" />
+                                            <label for="file" class="btn ink-reaction btn-floating-action btn-default-dark btn-edit" style="position: relative;box-shadow: 0 1px 3px 0 rgb(68, 68, 68);opacity: 1;margin-top: -21px;margin-left:5px;">
+                                                <i class="md md-edit"></i>
+                                            </label>
+                                            <h3>
+                                                <div class="col-md-12">
+                                                    <div class="form">
+                                                        <div class="form-group">
+                                                            <input class="form-control" id="nombre" name="nombre" type="text" required [(ngModel)]="json.nombre">
+                                                            <label for="razon">Nombre</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form">
+                                                        <div class="form-group">
+                                                            <input class="form-control" id="rut" name="rut" type="text" required [(ngModel)]="json.rut">
+                                                            <label for="razon">Rut empresa</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h3>
+                                        </div>
+                                        <div class="col-md-8 col-xs-7" *ngIf="!licence.nombre">
+                                            <div class="width-4 text-center pull-right">
+                                                <span class="text-danger" style="font-size: 19px;">Aún no se agrega una licencia</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 col-xs-7" *ngIf="licence.nombre">
+                                            <div class="width-3 text-center pull-right">
+                                                <strong style="font-size: 150%;">{{licence.dispo}}</strong>
+                                                <br>
+                                                <span class="text-light opacity-75">Disp. activos</span>
+                                            </div>
+                                            <div class="width-3 text-center pull-right">
+                                                <strong style="font-size: 150%;">{{licence.max}}</strong>
+                                                <br>
+                                                <span class="text-light opacity-75">Max. dispositivos</span>
+                                            </div>
+                                            <div class="width-3 text-center pull-right">
+                                                <strong style="font-size: 150%;">{{licence.nombre}}</strong>
+                                                <br>
+                                                <span class="text-light opacity-75">Plan contratado</span>
+                                            </div>
+                                            <div class="width-3 text-center pull-right">
+                                                <strong style="font-size: 150%;">{{licence.fecha | date: 'dd/MM/yyyy' }}</strong>
+                                                <br>
+                                                <span class="text-light opacity-75">Fecha de caducidad</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 col-xs-12">
+                                            <div class="col-md-6 col-xs-12">
+                                                <div class="form">
+                                                    <div class="form-group">
+                                                        <input class="form-control" id="razon" name="razon" type="text" required [(ngModel)]="json.razon">
+                                                        <label for="razon">Razon social</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="form-control" id="resolucion" name="resolucion" type="text" required [(ngModel)]="json.resolucion">
+                                                        <label>Resolución</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="form-control" id="email" name="email" type="email" required [(ngModel)]="json.email">
+                                                        <label>Email</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="form-control" id="direccion" name="direccion" type="text" required [(ngModel)]="json.direccion">
+                                                        <label>Dirección</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="form-control" id="ciudad" name="ciudad" type="text" required [(ngModel)]="json.ciudad">
+                                                        <label>Ciudad</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-xs-12">
+                                                <div class="form">
+                                                    <div class="form-group">
+                                                        <input class="form-control" id="fono" name="fono" type="text" required [(ngModel)]="json.fono">
+                                                        <label>Télefono</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="form-control" id="fax" name="fax" type="text" required [(ngModel)]="json.fax">
+                                                        <label>Fax</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="form-control" id="web" name="web" type="text" required [(ngModel)]="json.web">
+                                                        <label>Web</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="form-control" id="r_representante" name="r_representante" type="text" required [(ngModel)]="json.r_representante">
+                                                        <label>Rut del representante</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input class="form-control" id="representante" name="representante" type="text" required [(ngModel)]="json.representante">
+                                                        <label>Nombre del representante</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-actionbar">
+                                <div class="card-actionbar-row">
+                                    <a class="btn ink-reaction btn-danger" (click)="openModal()" *ngIf="json.habilitado == 1">Deshabilitar administrador</a>
+                                    <a class="btn ink-reaction btn-success" (click)="openModal()" *ngIf="json.habilitado == 0">Habilitar administrador</a>
+                                    <button class="btn ink-reaction btn-primary" type="submint" [disabled]="!updateAdmnistradorForm.form.valid">Actualizar administrador</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form class="form form-validate" (submit)="insertLicence()" #insertLicenceForm="ngForm">
+                        <div class="card">
+                            <div class="card-head style-accent">
+                                <header>Ingresar licencia</header>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input class="form-control" id="licencia" name='licencia' type="text" [(ngModel)]="newlicence.key" required>
+                                    <label for="licencia">Licencia</label>
+                                </div>
+                                <div class="alert alert-danger" role="alert" *ngIf="dvError">
+                                    La licencia ingresada no es válida
+                                </div>
+                            </div>
+                            <div class="card-actionbar">
+                                <div class="card-actionbar-row">
+                                    <button class="btn ink-reaction btn-primary" type="submint" [disabled]="!insertLicenceForm.form.valid">ingresar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form class="form form-validate" (submit)="updatePassAdmin()" #upPassAdminForm="ngForm">
+                        <div class="card">
+                            <div class="card-head style-accent">
+                                <header>Generar nueva contraseña</header>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input class="form-control" id="pass" name='pass' type="password" [(ngModel)]="jsonPass.password" required>
+                                    <label for="pass">Contraseña</label>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" id="pass2" name='pass2' type="password" [(ngModel)]="jsonPass.repassword" required>
+                                    <label for="pass2">Reingresa la contraseña</label>
+                                </div>
+                            </div>
+                            <div class="card-actionbar">
+                                <div class="card-actionbar-row">
+                                    <button class="btn ink-reaction btn-primary" type="submint" [disabled]="!upPassAdminForm.form.valid">Actualizar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+
+        <div id="menubar" class=" ">
+            <div class="menubar-fixed-panel">
+                <div>
+                    <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <div class="expanded">
+                    <span class="text-lg text-bold text-primary ">MATERIAL&nbsp;ADMIN</span>
+                </div>
+            </div>
+            <div class="menubar-scroll-panel">
+                <ul id="main-menu" class="gui-controls">
+                    <li>
+                        <a [routerLink]="['/administrador', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-home"></i>
+                            </div>
+                            <span class="title">Inicio</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/agendamiento', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <span class="title">Agendado</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/equipo', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <span class="title">Equipo técnico</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/clientes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </div>
+                            <span class="title">Clientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/ordenes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-format-list-bulleted"></i>
+                            </div>
+                            <span class="title">Ordenes de trabajo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/parametros', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-aspect-ratio"></i>
+                            </div>
+                            <span class="title">Parámetros</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="menubar-foot-panel">
+                    <small class="no-linebreak hidden-folded">
+                        <span class="opacity-75">Copyright &copy; 2017</span>
+                        <strong>PlagAPP</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" [ngClass]="modal ? 'in' : '' " [style.display]="modal ? 'block' : 'none'" role="dialog" aria-labelledby="simpleModalLabel"
+        aria-hidden="false" style="padding-right: 17px;">
+        <div class="modal-backdrop fade in" style="height: 100vh;"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="dismissModal()">×</button>
+                    <h4 class="modal-title" id="simpleModalLabel">Administrador</h4>
+                </div>
+                <div class="modal-body">
+                    <p *ngIf="json.habilitado == 1">Estas seguro que deseas deshabilitar al administrador?</p>
+                    <p *ngIf="json.habilitado == 0">Estas seguro que deseas habilitar al administrador?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" (click)="dismissModal()">Cancelar</button>
+                    <button type="button" class="btn btn-primary" (click)="hideAdministrador()" *ngIf="json.habilitado == 1">Si, deshabilitar</button>
+                    <button type="button" class="btn btn-primary" (click)="showAdministrador()" *ngIf="json.habilitado == 0">Si, habilitar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

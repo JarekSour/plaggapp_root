@@ -1,0 +1,33 @@
+.base{
+    min-height:100vh !important;
+}
+
+.logo{
+    max-width: 145px;
+}
+
+.img-producto{
+    width: 140px;
+    height: 140px !important;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px grey;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-edit{
+    height: 30px;
+    width: 30px;
+    margin-top: -50px;
+    margin-left: 75px;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}

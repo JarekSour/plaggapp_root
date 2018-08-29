@@ -1,0 +1,263 @@
+<body class="menubar-hoverable header-fixed menubar-pin ">
+    <app-header></app-header>
+
+    <div id="base" class="base">
+
+
+        <div class="offcanvas">
+        </div>
+
+        <div id="content">
+            <section>
+                <div class="section-header">
+                    <div class="col-md-6 col-xs-6">
+                        <ol class="breadcrumb">
+                            <li [routerLink]="['/ordenes', idAdministrador]" class="link">
+                                Ordenes de trabajo
+                            </li>
+                            <li [routerLink]="['/orden', idAdministrador, tipo, id]" class="link">
+                                {{tipo}}
+                            </li>
+                            <li [routerLink]="['/detalle', idAdministrador, tipo, id]" class="active">
+                                Certificado
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                    </div>
+                </div>
+
+                <div class="section-body">
+                    <div class="row">
+                        <div [ngClass]="ordenRealizada ? 'col-md-12': 'col-md-8 col-md-offset-2'">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="col-md-12">
+                                        <div class="col-md-4 col-md-offset-1 col-md-push-7" *ngIf="ordenRealizada">
+                                            <img class="img-responsive" [src]="logo" />
+                                            <h4 class="text-light opacity-75" style="font-size: 11px;margin-top: 5px;margin-bottom: 0px;">{{adm.razon}}</h4>
+                                            <h4 class="text-light opacity-75" style="font-size: 11px;margin-top: 5px;margin-bottom: 0px;">RUT: {{adm.rut}}</h4>
+                                            <h4 class="text-light opacity-75" style="font-size: 11px;margin-top: 5px;margin-bottom: 0px;">{{adm.direccion}} {{(adm.fax ? ' FONO / FAX ' + adm.fax : '')}} FONO {{adm.fono}}</h4>
+                                            <h4 class="text-light opacity-75" style="font-size: 11px;margin-top: 5px;margin-bottom: 0px;">{{adm.web}} {{adm.ciudad}}</h4>
+                                            <h4 class="text-light opacity-75" style="font-size: 11px;margin-top: 5px;margin-bottom: 0px;">RESOLUCIÓN N° {{adm.resolucion }}</h4>
+                                            <h4 class="text-light opacity-75" style="font-size: 11px;margin-top: 5px;margin-bottom: 0px;">REPRESENTANTE LEGAL: {{adm.representante}}</h4>
+                                            <h4 class="text-light opacity-75" style="font-size: 11px;margin-top: 5px;margin-bottom: 0px;">RUT: {{adm.r_representante}}</h4>
+                                            <!-- <h2>Recepción</h2>
+                                            <h4 class="text-light opacity-50" *ngIf="nombre == null">No se agregaron datos</h4>
+                                            <h4 class="text-light opacity-50" *ngIf="nombre !== null">{{nombre}}</h4>
+                                            <h2 *ngIf="nombre !== null">Rut</h2>
+                                            <h4 class="text-light opacity-50" *ngIf="nombre !== null">{{rut}}</h4> -->
+                                            <br>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                                                <div class="card" *ngIf="nombre !== null">
+                                                    <div class="card-head card-head-sm style-primary">
+                                                        <header>Firma recepción</header>
+                                                    </div>
+                                                    <div class="card-body small-padding text-center">
+                                                        <img class="img-responsive" [src]="firma_r">
+                                                        <h5 class="text-light opacity-75" *ngIf="nombre !== null">{{nombre}}</h5>
+                                                        <h5 class="text-light opacity-75" *ngIf="nombre !== null">{{rut}}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                                                <div class="card">
+                                                    <div class="card-head card-head-sm style-primary">
+                                                        <header>Firma técnico</header>
+                                                    </div>
+                                                    <div class="card-body small-padding text-center">
+                                                        <img class="img-responsive" [src]="firma_t">
+                                                        <h5 class="text-light opacity-75" *ngIf="nombre !== null">{{nombre_tecnico}}</h5>
+                                                        <h5 class="text-light opacity-75" *ngIf="nombre !== null">{{rut_tecnico}}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 col no-padding">
+                                                <div class="card">
+                                                    <div class="card-head card-head-sm style-primary">
+                                                        <header>Firma representante técnico</header>
+                                                    </div>
+                                                    <div class="card-body small-padding text-center">
+                                                        <img class="img-responsive" [src]="firma_j">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <button type="button" [routerLink]="['/punto',idAdministrador, tipo, id]" class="btn btn-block ink-reaction btn-accent-dark">Ver detalle por punto</button>
+                                            <button type="button" class="btn btn-block ink-reaction btn-accent" (click)="sendToPDF('download')">Descargar PDF</button>
+                                            <button type="button" class="btn btn-block ink-reaction btn-accent-light" (click)="sendToPDF('print')">Imprimir PDF</button>
+                                        </div>
+                                        <div [ngClass]="ordenRealizada ? 'col-md-7 col-md-pull-5': 'col-md-12'">
+                                            <em class="text-caption text-right" style="margin-bottom: 0px;">{{fecha}}</em>
+                                            <em class="text-caption text-right" style="margin-bottom: 0px;">Num. #{{numero}}</em>
+                                            <p class="text-danger" style="margin-top: -40px;" *ngIf="!ordenRealizada">Orden no realizada</p>
+                                            <h1 style="margin-bottom: -3px;margin-top: -10px;">{{empresa}}</h1>
+                                            <span style="font-size: 12px;color: gray;">{{rutempresa}}</span>
+                                            <h3 style="margin-bottom: 0px;margin-top: 8px;">{{representante}}</h3>
+                                            <p style="font-size: 12px;color: gray;margin-bottom: -5px;">{{rutrepresentante}}</p>
+                                            <p style="font-size: 12px;color: gray;">{{direccion_representante}}</p>
+                                            <div class="card card-bordered style-primary" *ngIf="!ordenRealizada">
+                                                <div class="card-head">
+                                                    <header>
+                                                        <i class="fa fa-fw fa-tag"></i> Comentario</header>
+                                                </div>
+                                                <div class="card-body style-default-bright">
+                                                    <p>{{comentario}}</p>
+                                                </div>
+                                            </div>
+                                            <table class="table" *ngIf="ordenRealizada">
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            <b>Tiempos</b>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>Comienzo</td>
+                                                        <td class="text-right">{{comienzo}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>Término</td>
+                                                        <td class="text-right">{{termino}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="table" *ngIf="ordenRealizada">
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <b>Puntos revisados</b>
+                                                        </td>
+                                                        <td class="text-right">{{numPuntos}}</td>
+                                                    </tr>
+                                                    <tr *ngFor="let item of puntos">
+                                                        <td></td>
+                                                        <td>{{item.sector}}</td>
+                                                        <td class="text-right">{{item.total}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="table" *ngIf="ordenRealizada && trampas?.length > 0">
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <b>Trampas usadas</b>
+                                                    </td>
+                                                    <td class="text-right"></td>
+                                                </tr>
+                                                <tr *ngFor="let item of trampas">
+                                                    <td></td>
+                                                    <td>{{item.trampa}}</td>
+                                                    <td class="text-right">{{item.total}}</td>
+                                                </tr>
+                                            </table>
+                                            <table class="table" *ngIf="ordenRealizada && desinsectados?.length > 0">
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <b>Desinsectado/Sanitizado</b>
+                                                    </td>
+                                                    <td class="text-right"></td>
+                                                </tr>
+                                                <tr *ngFor="let item of desinsectados">
+                                                    <td></td>
+                                                    <td>{{item.veneno}}</td>
+                                                    <td class="text-right">{{item.total}}</td>
+                                                </tr>
+                                            </table>
+                                            <div>
+                                                <h4>Recomendaciones</h4>
+                                                <ul>
+                                                    <li>Para efectuar las aplicaciones de insecticidas las casas deben estar
+                                                        desocupadas.</li>
+                                                    <li>Deben taparse alimentos, lozas, verduras y frutas.</li>
+                                                    <li>Juguetes de niños y otros taparlos que no queden expuestos a las aplicaciones.</li>
+                                                    <li>Una vez realizada la desinsectación dejar la casa cerrada por dos horas</li>
+                                                    <li>Ventilar por al menos 2 hrs. (dependiendo de las condiciones de ventilación
+                                                        de cada hogar) abriendo ventanas y puertas para efectuar corrientes
+                                                        de aires.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="menubar" class=" ">
+            <div class="menubar-fixed-panel">
+                <div>
+                    <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <div class="expanded">
+                    <span class="text-lg text-bold text-primary ">MATERIAL&nbsp;ADMIN</span>
+                </div>
+            </div>
+            <div class="menubar-scroll-panel">
+                <ul id="main-menu" class="gui-controls">
+                    <li>
+                        <a [routerLink]="['/administrador', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-home"></i>
+                            </div>
+                            <span class="title">Inicio</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/agendamiento', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <span class="title">Agendado</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/equipo', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <span class="title">Equipo técnico</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/clientes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </div>
+                            <span class="title">Clientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/ordenes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-format-list-bulleted"></i>
+                            </div>
+                            <span class="title">Ordenes de trabajo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/parametros', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-aspect-ratio"></i>
+                            </div>
+                            <span class="title">Parámetros</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="menubar-foot-panel">
+                    <small class="no-linebreak hidden-folded">
+                        <span class="opacity-75">Copyright &copy; 2017</span>
+                        <strong>PlagAPP</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

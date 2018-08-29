@@ -1,0 +1,21 @@
+.base{
+    min-height:100vh !important;
+}
+
+.logo{
+    max-width: 145px;
+}
+
+agm-map {
+    height: 400px;
+  }
+
+  .link{
+    cursor: pointer;
+}
+
+.link:hover{
+    color: #f44336;
+    outline: none;
+}
+

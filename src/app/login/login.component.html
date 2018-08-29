@@ -1,0 +1,39 @@
+<body class="menubar-hoverable header-fixed" style="height: 100vh;">
+    <section class="section-account">
+        <div class="img-backdrop" style="background-image: url('/assets/img/img16.jpg')"></div>
+        <div class="spacer"></div>
+        <div class="card contain-sm style-transparent">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <br/>
+                        <img src="assets/img/logo.png" class="img-responsive">
+                        <br/>
+                        <h4>ROOT</h4>
+                        <form class="form" (submit)="doLogin()" #loginForm="ngForm">
+                            <div class="form-group">
+                                <input [(ngModel)]="loginData.email" type="email" class="form-control" name="email" required>
+                                <label for="username">EMAIL</label>
+                            </div>
+                            <div class="form-group">
+                                <input [(ngModel)]="loginData.pass" type="password" class="form-control" name="password" required>
+                                <label for="password">Clave</label>
+                            </div>
+                            <br/>
+                            <div class="row" *ngIf="error">
+                                <div class="card">
+                                    <div class="card-body style-danger height-1" style="padding: 9px;">{{error}}</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 text-right">
+                                    <button class="btn btn-primary btn-raised" type="submit" [disabled]="!loginForm.form.valid">Ingresar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>

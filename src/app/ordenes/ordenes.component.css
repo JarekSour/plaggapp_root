@@ -1,0 +1,21 @@
+.base{
+    min-height:100vh !important;
+}
+
+.logo{
+    max-width: 145px;
+}
+
+.name-tec{
+    color: #4d4d4d !important;
+    cursor: pointer;
+}
+
+.link{
+    cursor: pointer;
+}
+
+.link:hover{
+    color: #f44336;
+    outline: none;
+}

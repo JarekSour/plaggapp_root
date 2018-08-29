@@ -1,0 +1,175 @@
+<body class="menubar-hoverable header-fixed menubar-pin ">
+    <app-header></app-header>
+
+    <div id="base" class="base">
+
+        <div class="offcanvas">
+        </div>
+
+        <div id="content">
+            <section>
+                <div class="section-header">
+                    <div class="col-md-6 col-xs-6">
+                        <ol class="breadcrumb">
+                            <li class="active">
+                                Equipo técnico
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                        <div class="pull-right">
+                            <div class="btn-group">
+                                <a (click)="showFirmaJefe()" type="button" class="btn ink-reaction btn-accent">
+                                    <span class="md md-insert-drive-file"></span> &nbsp;Firma representante técnico
+                                </a>
+                                <a [routerLink]="['/new-tech', idAdministrador]" type="button" class="btn ink-reaction btn-accent-dark">
+                                    <span class="fa fa-plus"></span> &nbsp;Agregar técnico
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-body">
+                    <div class="row">
+                        <div class="card" *ngIf="divFirmaJefe">
+                            <div class="card-head card-head-xs style-primary">
+                                <header>Firma representante técnico</header>
+                                <div class="tools hidden-md">
+                                    <a class="btn btn-icon-toggle btn-close" (click)="hideFirmaJefe()">
+                                        <i class="md md-close"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body text-default-light">
+                                <div class="col-md-5 col-md-offset-2 ">
+                                    <img *ngIf="image" [src]="data.image" style="border: 1px dotted #c7c7c7;">
+                                    <div *ngIf="bloqueTexto" style="border: 1px dotted gray" text-center>
+                                        <p style="padding: 30px;text-align: center;margin: 0px;">No tienes ninguna firma asociada</p>
+                                    </div>
+                                    <br>
+                                    <img-cropper *ngIf="dvCrop" #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <div *ngIf="!btnAdd">
+                                        <input [(ngModel)]="inputAvatar" (change)="updateFirma($event)" type="file" accept="image/*" name="file" id="file" class="inputfile"
+                                        />
+                                        <label for="file" class="btn btn-block ink-reaction btn-success">
+                                            {{existFirmaJefe ? 'Cambiar firma': 'Agregar firma'}}
+                                        </label>
+                                    </div>
+                                    <button *ngIf="btnCrop" type="button" class="btn ink-reaction btn-raised btn-success btn-block" (click)="aceptarImagen()">Aceptar</button>
+                                    <button *ngIf="btnCrop" type="button" class="btn btn-flat btn-success ink-reaction btn-block" (click)="hideCrop()">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body text-default-light">
+                                <h2 *ngIf="tech?.length == 0">No tienes técnicos asociados a tu cuenta</h2>
+                                <div class="list-results">
+                                    <div class="col-xs-6 col-lg-4 hbox-xs" *ngFor="let item of tech">
+                                        <div class="hbox-column width-2">
+                                            <img class="img-circle img-responsive pull-left " src="https://api.plagapp.cl/tecnico/avatar/get?image={{item.avatar}}">
+                                        </div>
+                                        <div class="hbox-column v-top">
+                                            <div class="clearfix">
+                                                <div class="col-lg-12 margin-bottom-lg name-tec">
+                                                    <a [routerLink]="['/equipo', idAdministrador, 'tecnico', item.id]" class="text-lg text-medium">{{item.nombre}} {{item.apellido_paterno}} {{item.apellido_materno}}</a>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix opacity-80">
+                                                <div class="col-md-12">
+                                                    &nbsp;
+                                                    <span style="font-weight: 900">TELÉFONO</span> {{item.telefono}}
+                                                    <br> &nbsp;
+                                                    <span style="font-weight: 900">CORREO</span> {{item.correo}}
+                                                </div>
+                                            </div>
+                                            <div class="stick-top-right small-padding">
+												<i class="fa fa-dot-circle-o fa-fw text-success" *ngIf="item.habilitado == 1"></i>
+												<i class="fa fa-dot-circle-o fa-fw text-danger" *ngIf="item.habilitado == 0"></i>
+											</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="menubar" class=" ">
+            <div class="menubar-fixed-panel">
+                <div>
+                    <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <div class="expanded">
+                    <span class="text-lg text-bold text-primary ">MATERIAL&nbsp;ADMIN</span>
+                </div>
+            </div>
+            <div class="menubar-scroll-panel">
+                <ul id="main-menu" class="gui-controls">
+                    <li>
+                        <a [routerLink]="['/administrador', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-home"></i>
+                            </div>
+                            <span class="title">Inicio</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/agendamiento', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <span class="title">Agendado</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/equipo', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <span class="title">Equipo técnico</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/clientes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </div>
+                            <span class="title">Clientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/ordenes', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-format-list-bulleted"></i>
+                            </div>
+                            <span class="title">Ordenes de trabajo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/parametros', idAdministrador]">
+                            <div class="gui-icon">
+                                <i class="md md-aspect-ratio"></i>
+                            </div>
+                            <span class="title">Parámetros</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="menubar-foot-panel">
+                    <small class="no-linebreak hidden-folded">
+                        <span class="opacity-75">Copyright &copy; 2017</span>
+                        <strong>PlagAPP</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

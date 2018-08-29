@@ -1,0 +1,23 @@
+.base{
+    min-height:100vh !important;
+}
+
+.logo{
+    max-width: 145px;
+}
+
+.name-tec{
+    color: #4d4d4d !important;
+    cursor: pointer;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+

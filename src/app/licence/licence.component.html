@@ -1,0 +1,89 @@
+<body class="menubar-hoverable header-fixed menubar-pin ">
+
+    <app-header></app-header>
+
+    <div id="content" style="min-height:100vh">
+        <div class="container">
+            <section>
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="section-header">
+                        <div class="pull-right">
+                            <div class="btn-group">
+                                <a (click)="showCardNewLicence()" type="button" class="btn ink-reaction btn-accent-dark">
+                                    <span class="fa fa-plus"></span> &nbsp;Crear licencia
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="row" *ngIf="cardLicence">
+                            <form class="form form-validate" (submit)="newLicence()" #newLicenceForm="ngForm">
+                                <div class="card">
+                                    <div class="card-head style-accent">
+                                        <header>Nueva Licencia</header>
+                                    </div>
+                                    <div class="card-body text-default-light">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input class="form-control" id="nombre" name="nombre" type="text" required [(ngModel)]="json.nombre">
+                                                    <label>Nombre del plan</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input class="form-control" id="max_device" name="max_device" type="number" required [(ngModel)]="json.max_device">
+                                                    <label>Número máximo de dispositivos</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-actionbar">
+                                        <div class="card-actionbar-row">
+                                            <i class="fa fa-spinner fa-pulse fa-1x fa-fw" *ngIf="ifLoading"></i>
+                                            <span *ngIf="ifLoading">Creando licencia</span>
+                                            <button type="submit" class="btn ink-reaction btn-primary" [disabled]="!newLicenceForm.form.valid">Crear licencia</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-body text-default-light">
+                                    <h3 *ngIf="licencias?.length == 0">Aún no existen licencias</h3>
+
+                                    <table class="table table-hover no-margin" *ngIf="licencias?.length > 0">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>N° máximo de dispositivos</th>
+                                                <th>Caduca</th>
+                                                <th>Key</th>
+                                                <th>Copiar key</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of licencias">
+                                                <td>{{item.nombre}}</td>
+                                                <td>{{item.max_device}}</td>
+                                                <td>{{ item.caduca != null ? (item.caduca | date:'dd/MM/yyyy') : '---'}}</td>
+                                                <td>{{item.key}}</td>
+                                                <td>
+                                                    <button (click)="copyClipboard(item.key)" type="button" class="btn ink-reaction btn-floating-action btn-xs btn-primary">
+                                                        <i class="md md-content-copy"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div>
+</body>
